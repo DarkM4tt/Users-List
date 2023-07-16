@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import useFetch from "../hooks/useFetch";
+import UserDetails from "../components/UserDetails";
+import CompanyDetails from "./../components/CompanyDetails";
 
 const Dashboard = () => {
   const params = useParams();
@@ -36,7 +38,8 @@ const Dashboard = () => {
       </div>
 
       <div className="flex-[75%] pt-16 pr-20">
-        <div className="flex justify-between w-full border-b-2 pb-8">
+        {/* Header */}
+        <div className="flex justify-between w-full border-b-[1px] border-gray-400 pb-8">
           <h1 className="text-2xl font-bold text-gray-500">Profile</h1>
           <div className="flex gap-4 items-center">
             <img
@@ -48,6 +51,25 @@ const Dashboard = () => {
               {displayUser?.name}
             </h1>
           </div>
+        </div>
+
+        <div className="flex h-auto w-full pt-10">
+          <div className="flex flex-col gap-4 items-center border-r-[1px] border-gray-400 flex-[36%]">
+            <UserDetails
+              image={displayUser?.profilepicture}
+              name={displayUser?.name}
+              username={displayUser?.username}
+              email={displayUser?.email}
+              phone={displayUser?.phone}
+              website={displayUser?.website}
+            />
+            <CompanyDetails
+              name={displayUser?.company?.name}
+              phrase={displayUser?.company?.catchPhrase}
+              bs={displayUser?.company?.bs}
+            />
+          </div>
+          <div className="flex-[64%]"></div>
         </div>
       </div>
     </div>
