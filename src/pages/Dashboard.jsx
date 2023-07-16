@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import useFetch from "../hooks/useFetch";
 import UserDetails from "../components/UserDetails";
 import CompanyDetails from "./../components/CompanyDetails";
+import Address from "../components/Address";
 
 const Dashboard = () => {
   const params = useParams();
@@ -15,8 +16,6 @@ const Dashboard = () => {
     });
     setDisplayUser(resUser);
   }, [params, users]);
-
-  console.log(displayUser);
 
   return (
     <div className="w-[100vw] flex">
@@ -69,7 +68,10 @@ const Dashboard = () => {
               bs={displayUser?.company?.bs}
             />
           </div>
-          <div className="flex-[64%]"></div>
+
+          <div className="flex-[64%] px-14">
+            <Address data={displayUser?.address} />
+          </div>
         </div>
       </div>
     </div>

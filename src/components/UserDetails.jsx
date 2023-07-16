@@ -1,13 +1,5 @@
 import React from "react";
-
-const Details = ({ pre, post }) => {
-  return (
-    <div className="flex gap-5 items-center">
-      <p className="font-semibold text-xl text-gray-400">{pre}:</p>
-      <p className="font-bold text-xl text-gray-600">{post}</p>
-    </div>
-  );
-};
+import Details from "./Details";
 
 const UserDetails = ({ image, name, username, email, phone, website }) => {
   return (
