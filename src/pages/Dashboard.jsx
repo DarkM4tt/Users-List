@@ -4,14 +4,17 @@ import useFetch from "../hooks/useFetch";
 import UserDetails from "../components/UserDetails";
 import CompanyDetails from "./../components/CompanyDetails";
 import Address from "../components/Address";
+import Map from "../components/Map";
+import Header from "../components/Header";
+import Navbar from "../components/Navbar";
 
 const Dashboard = () => {
   const params = useParams();
   const [displayUser, setDisplayUser] = useState("");
-  const { users } = useFetch();
+  const { users, loading } = useFetch();
 
   useEffect(() => {
-    const resUser = users.find((data) => {
+    const resUser = users?.find((data) => {
       return +data.id === +params.id;
     });
     setDisplayUser(resUser);
@@ -20,48 +23,34 @@ const Dashboard = () => {
   return (
     <div className="w-[100vw] flex">
       <div className="flex-[25%] py-12 px-14">
-        <div className="bg-blue-500 px-10 flex flex-col gap-6 items-center justify-center w-full h-[50rem] rounded-3xl">
-          <div className="border-gray-300 border-b-[1px] w-full pb-2">
-            <h1 className="text-white font-bold text-xl">Profile</h1>
-          </div>
-          <div className="border-gray-300 border-b-[1px] w-full pb-2">
-            <h1 className="text-white text-xl">Posts</h1>
-          </div>
-          <div className="border-gray-300 border-b-[1px] w-full pb-2">
-            <h1 className="text-white text-xl">Gallery</h1>
-          </div>
-          <div className="w-full pb-2">
-            <h1 className="text-white text-xl">Todo</h1>
-          </div>
-        </div>
+        <Navbar />
       </div>
 
       <div className="flex-[75%] pt-16 pr-20">
         {/* Header */}
         <div className="flex justify-between w-full border-b-[1px] border-gray-400 pb-8">
-          <h1 className="text-2xl font-bold text-gray-500">Profile</h1>
-          <div className="flex gap-4 items-center">
-            <img
-              className="w-8 h-8 rounded-3xl"
-              alt=""
-              src={displayUser?.profilepicture}
-            />
-            <h1 className="text-gray-500 font-semibold text-lg">
-              {displayUser?.name}
-            </h1>
-          </div>
+          <Header
+            name={displayUser?.name}
+            image={displayUser?.profilepicture}
+          />
         </div>
 
         <div className="flex h-auto w-full pt-10">
           <div className="flex flex-col gap-4 items-center border-r-[1px] border-gray-400 flex-[36%]">
-            <UserDetails
-              image={displayUser?.profilepicture}
-              name={displayUser?.name}
-              username={displayUser?.username}
-              email={displayUser?.email}
-              phone={displayUser?.phone}
-              website={displayUser?.website}
-            />
+            {loading ? (
+              <p>Loading map...</p>
+            ) : displayUser ? (
+              <UserDetails
+                image={displayUser?.profilepicture}
+                name={displayUser?.name}
+                username={displayUser?.username}
+                email={displayUser?.email}
+                phone={displayUser?.phone}
+                website={displayUser?.website}
+              />
+            ) : (
+              <p>No location data available</p>
+            )}
             <CompanyDetails
               name={displayUser?.company?.name}
               phrase={displayUser?.company?.catchPhrase}
@@ -71,6 +60,35 @@ const Dashboard = () => {
 
           <div className="flex-[64%] px-14">
             <Address data={displayUser?.address} />
+
+            {/* Map */}
+            {loading ? (
+              <p>Loading map...</p>
+            ) : displayUser &&
+              displayUser.address &&
+              displayUser.address.geo ? (
+              <div className="border-[1px] w-full h-[22rem] rounded-3xl ml-10 mt-6 overflow-hidden">
+                <Map data={displayUser.address} />
+              </div>
+            ) : (
+              <p>No location data available</p>
+            )}
+
+            {/* Points */}
+            <div className="flex justify-end gap-6 mt-4 text-sm">
+              <div className="flex gap-2">
+                <p className="font-semibold text-gray-400">Lat:</p>
+                <p className="font-bold text-gray-600">
+                  {displayUser?.address?.geo?.lat}
+                </p>
+              </div>
+              <div className="flex gap-2">
+                <p className="font-semibold text-gray-400">Long:</p>
+                <p className="font-bold text-gray-600">
+                  {displayUser?.address?.geo?.lng}
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
