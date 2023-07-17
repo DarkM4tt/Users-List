@@ -6,7 +6,7 @@ import CompanyDetails from "./../components/CompanyDetails";
 import Address from "../components/Address";
 import Map from "../components/Map";
 import Header from "../components/Header";
-import Navbar from "../components/Navbar";
+import Sidebar from "../components/Sidebar";
 
 const Dashboard = () => {
   const params = useParams();
@@ -23,22 +23,25 @@ const Dashboard = () => {
   return (
     <div className="w-[100vw] flex">
       <div className="flex-[25%] py-12 px-14">
-        <Navbar />
+        <Sidebar />
       </div>
 
       <div className="flex-[75%] pt-16 pr-20">
         {/* Header */}
         <div className="flex justify-between w-full border-b-[1px] border-gray-400 pb-8">
-          <Header
-            name={displayUser?.name}
-            image={displayUser?.profilepicture}
-          />
+          {loading ? (
+            <p>Loading user...</p>
+          ) : displayUser ? (
+            <Header user={displayUser} users={users} />
+          ) : (
+            <p>No user data available</p>
+          )}
         </div>
 
         <div className="flex h-auto w-full pt-10">
           <div className="flex flex-col gap-4 items-center border-r-[1px] border-gray-400 flex-[36%]">
             {loading ? (
-              <p>Loading map...</p>
+              <p>Loading user...</p>
             ) : displayUser ? (
               <UserDetails
                 image={displayUser?.profilepicture}
@@ -49,7 +52,7 @@ const Dashboard = () => {
                 website={displayUser?.website}
               />
             ) : (
-              <p>No location data available</p>
+              <p>No user data available</p>
             )}
             <CompanyDetails
               name={displayUser?.company?.name}
@@ -67,7 +70,7 @@ const Dashboard = () => {
             ) : displayUser &&
               displayUser.address &&
               displayUser.address.geo ? (
-              <div className="border-[1px] w-full h-[22rem] rounded-3xl ml-10 mt-6 overflow-hidden">
+              <div className="border-[1px] -z-10 w-full h-[22rem] rounded-3xl ml-10 mt-6 overflow-hidden">
                 <Map data={displayUser.address} />
               </div>
             ) : (
