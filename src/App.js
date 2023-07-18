@@ -4,12 +4,10 @@ import Dashboard from "./pages/Dashboard";
 
 function App() {
   return (
-    <>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/:id" element={<Dashboard />} />
+        <Route path="/:page/:id" element={<Dashboard />} />
       </Routes>
-    </>
   );
 }
 

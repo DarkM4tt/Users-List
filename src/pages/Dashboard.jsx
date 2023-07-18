@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useMemo } from "react";
 import { useParams } from "react-router-dom";
 import useFetch from "../hooks/useFetch";
 import UserDetails from "../components/UserDetails";
@@ -10,23 +10,21 @@ import Sidebar from "../components/Sidebar";
 import ChatBox from '../components/ChatBox';
 
 const Dashboard = () => {
-  const params = useParams();
-  const [displayUser, setDisplayUser] = useState("");
+  const {page, id} = useParams();
   const { users, loading } = useFetch();
 
-  useEffect(() => {
-    const resUser = users?.find((data) => {
-      return +data.id === +params.id;
+  const displayUser = useMemo(() => {
+    return users?.find((data) => {
+      return +data.id === +id;
     });
-    setDisplayUser(resUser);
-  }, [params, users]);
+  }, [id, users])
 
   return (
     <div className="w-[100vw] flex">
       <div className="flex-[25%] py-12 px-14">
         <Sidebar />
       </div>
-      <ChatBox users={users} />
+      <ChatBox users={users.filter((user) => user.name !== displayUser?.name)} />
       <div className="flex-[75%] pt-16 pr-20">
         {/* Header */}
         <div className="flex justify-between w-full border-b-[1px] border-gray-400 pb-8">
@@ -39,7 +37,9 @@ const Dashboard = () => {
           )}
         </div>
 
-        <div className="flex h-auto w-full pt-10">
+      {
+        page === 'profile' ? (
+          <div className="flex h-auto w-full pt-10">
           <div className="flex flex-col gap-4 items-center border-r-[1px] border-gray-400 flex-[36%]">
             {loading ? (
               <p>Loading user...</p>
@@ -95,6 +95,12 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
+        ) : (
+          <div className="w-full h-full flex justify-center items-center">
+            <p className="text-8xl font-extrabold text-gray-200 mb-36 select-none">Coming Soon</p>
+          </div>
+        )
+      }
       </div>
     </div>
   );

@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import Modal from "./Modal";
+import { useParams } from 'react-router-dom';
 
 const Header = ({ user, users }) => {
+  const {page} = useParams();
   const [isOpen, setIsOpen] = useState(false);
   const { name, profilepicture, email } = user;
 
   return (
     <>
-      <h1 className="text-2xl font-bold text-gray-500">Profile</h1>
+      <h1 className="text-2xl font-bold text-gray-500 capitalize">{page}</h1>
       <div
         onClick={() => setIsOpen((prevState) => !prevState)}
         className="flex gap-4 items-center cursor-pointer"
