@@ -7,6 +7,7 @@ import Address from "../components/Address";
 import Map from "../components/Map";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
+import ChatBox from '../components/ChatBox';
 
 const Dashboard = () => {
   const params = useParams();
@@ -25,7 +26,7 @@ const Dashboard = () => {
       <div className="flex-[25%] py-12 px-14">
         <Sidebar />
       </div>
-
+      <ChatBox users={users} />
       <div className="flex-[75%] pt-16 pr-20">
         {/* Header */}
         <div className="flex justify-between w-full border-b-[1px] border-gray-400 pb-8">
